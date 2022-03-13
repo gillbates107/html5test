@@ -1632,38 +1632,7 @@ Game.Launch=function()
 		
 		Game.grandmaNames=['Granny','Gusher','Ethel','Edna','Doris','Maud','Hilda','Gladys','Michelle','Michele','Phyllis','Millicent','Muriel','Myrtle','Mildred','Mavis','Helen','Gloria','Sheila','Betty','Gertrude','Agatha','Beryl','Agnes','Pearl','Precious','Ruby','Vera','Bonnie','Ada','Bunny','Cookie','Darling','Gaga','GamGam','Memaw','Mimsy','Peanut','Nana','Nan','Tootsie','Warty','Stinky','Heinous'];
 		Game.customGrandmaNames=[];
-		Game.heralds=0;
-		
-		Game.GrabData=function()
-		{
-			ajax('/patreon/grab.php',Game.GrabDataResponse);
-		}
-		Game.GrabDataResponse=function(response)
-		{
-			/*
-				response should be formatted as
-				{"herald":3,"grandma":"a|b|c|...}
-			*/
-			var r={};
-			try{
-				r=JSON.parse(response);
-				if (typeof r['herald']!=='undefined')
-				{
-					Game.heralds=parseInt(r['herald']);
-					Game.heralds=Math.max(0,Math.min(100,Game.heralds));
-				}
-				if (typeof r['grandma']!=='undefined' && r['grandma']!='')
-				{
-					Game.customGrandmaNames=r['grandma'].split('|');
-					Game.customGrandmaNames=Game.customGrandmaNames.filter(function(el){return el!='';});
-				}
-				
-				l('heraldsAmount').innerHTML=Game.heralds;
-				Game.externalDataLoaded=true;
-			}catch(e){}
-		}
-		
-		
+		Game.heralds=41;
 		
 		Game.attachTooltip(l('httpsSwitch'),'<div style="padding:8px;width:350px;text-align:center;font-size:11px;">You are currently playing Cookie Clicker on the <b>'+(Game.https?'HTTPS':'HTTP')+'</b> protocol.<br>The <b>'+(Game.https?'HTTP':'HTTPS')+'</b> version uses a different save slot than this one.<br>Click this lock to reload the page and switch to the <b>'+(Game.https?'HTTP':'HTTPS')+'</b> version!</div>','this');
 		AddEvent(l('httpsSwitch'),'click',function(){
@@ -1685,10 +1654,6 @@ Game.Launch=function()
 		
 		Game.attachTooltip(l('heralds'),function(){
 			var str='';
-			
-			if (!Game.externalDataLoaded) str+='Heralds couldn\'t be loaded. There may be an issue with our servers, or you are playing the game locally.';
-			else
-			{
 				if (Game.heralds==0) str+='There are no heralds at the moment. Please consider <b style="color:#bc3aff;">donating to our Patreon</b>!';
 				else
 				{
@@ -1698,7 +1663,6 @@ Game.Launch=function()
 					else if (Game.Has('Heralds')) str+='You own the <b>Heralds</b> upgrade, and therefore benefit from the production boost.';
 					else str+='To benefit from the herald bonus, you need a special upgrade you do not yet own. You will permanently unlock it later in the game.';
 				}
-			}
 			str+='<div class="line"></div><span style="font-size:90%;opacity:0.6;"><b>Heralds</b> are people who have donated to our highest Patreon tier, and are limited to 100.<br>Each herald gives everyone +1% CpS.<br>Heralds benefit everyone playing the game, regardless of whether you donated.</span>';
 			
 			str+='<div style="width:31px;height:39px;background:url(img/heraldFlag.png);position:absolute;top:0px;left:8px;"></div><div style="width:31px;height:39px;background:url(img/heraldFlag.png);position:absolute;top:0px;right:8px;"></div>';
